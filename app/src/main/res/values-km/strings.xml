@@ -3,12 +3,12 @@
 <!DOCTYPE resources [
     <!ENTITY TERMUX_PACKAGE_NAME "com.seangritthy.terminal">
     <!ENTITY TERMUX_APP_NAME "Terminal">
-    <!ENTITY TERMUX_API_APP_NAME "Termux:API">
-    <!ENTITY TERMUX_BOOT_APP_NAME "Termux:Boot">
-    <!ENTITY TERMUX_FLOAT_APP_NAME "Termux:Float">
-    <!ENTITY TERMUX_STYLING_APP_NAME "Termux:Styling">
-    <!ENTITY TERMUX_TASKER_APP_NAME "Termux:Tasker">
-    <!ENTITY TERMUX_WIDGET_APP_NAME "Termux:Widget">
+    <!ENTITY TERMUX_API_APP_NAME "Terminal:API">
+    <!ENTITY TERMUX_BOOT_APP_NAME "Terminal:Boot">
+    <!ENTITY TERMUX_FLOAT_APP_NAME "Terminal:Float">
+    <!ENTITY TERMUX_STYLING_APP_NAME "Terminal:Styling">
+    <!ENTITY TERMUX_TASKER_APP_NAME "Terminal:Tasker">
+    <!ENTITY TERMUX_WIDGET_APP_NAME "Terminal:Widget">
     ]>
 
 <resources>
