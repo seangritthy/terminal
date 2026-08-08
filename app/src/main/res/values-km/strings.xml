@@ -203,7 +203,7 @@
 
     <!-- Termux:Float App Preferences -->
     <string name="termux_float_preferences_title">&TERMUX_FLOAT_APP_NAME;</string>
-    <string name="termux_float_preferences_summary">การកំណត់សម្រាប់កម្មវិធី &TERMUX_FLOAT_APP_NAME;</string>
+    <string name="termux_float_preferences_summary">ការកំណត់សម្រាប់កម្មវិធី &TERMUX_FLOAT_APP_NAME;</string>
 
 
 
