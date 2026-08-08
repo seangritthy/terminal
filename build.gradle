@@ -1,3 +1,8 @@
+File localAapt2 = new File("/data/data/com.termux/files/usr/bin/aapt2")
+if (localAapt2.exists() && localAapt2.canExecute()) {
+    System.setProperty("android.aapt2FromMavenOverride", localAapt2.absolutePath)
+}
+
 buildscript {
     repositories {
         mavenCentral()
