@@ -319,6 +319,9 @@ public final class TermuxActivity extends AppCompatActivity implements ServiceCo
         // notification with the crash details if it did
         TermuxCrashUtils.notifyAppCrashFromCrashLogFile(this, LOG_TAG);
 
+        // Auto-check for Terminal updates from GitHub Releases
+        com.termux.app.updater.TerminalUpdateChecker.checkForUpdates(this);
+
         mIsOnResumeAfterOnCreate = false;
     }
 
