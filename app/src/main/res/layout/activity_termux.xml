@@ -12,8 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginHorizontal="3dp"
-        android:layout_marginVertical="0dp"
         android:orientation="vertical">
 
         <androidx.drawerlayout.widget.DrawerLayout
@@ -35,7 +33,7 @@
 
             <LinearLayout
                 android:id="@+id/left_drawer"
-                android:layout_width="240dp"
+                android:layout_width="280dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="start"
                 android:choiceMode="singleChoice"
@@ -43,53 +41,99 @@
                 android:dividerHeight="0dp"
                 android:descendantFocusability="blocksDescendants"
                 android:orientation="vertical"
-                android:background="?attr/termuxActivityDrawerBackground">
+                android:padding="12dp"
+                android:background="#0F172A">
 
-                <LinearLayout
+                <!-- Header Brand Card -->
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:padding="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/current_session">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@+id/settings_button"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Terminal"
+                            android:textColor="#00E5FF"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Antigravity AI Edition"
+                            android:textColor="#94A3B8"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
                     <ImageButton
                         android:id="@+id/settings_button"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
                         android:src="@drawable/ic_settings"
-                        android:background="@null"
+                        android:background="?attr/selectableItemBackgroundBorderless"
                         android:contentDescription="@string/action_open_settings"
-                        app:tint="?attr/termuxActivityDrawerImageTint" />
-                </LinearLayout>
+                        app:tint="#00E5FF" />
+                </RelativeLayout>
 
+                <!-- Sessions List -->
                 <ListView
                     android:id="@+id/terminal_sessions_list"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_gravity="top"
                     android:layout_weight="1"
+                    android:divider="@android:color/transparent"
+                    android:dividerHeight="6dp"
                     android:choiceMode="singleChoice"
                     android:longClickable="true" />
 
+                <!-- Action Buttons -->
                 <LinearLayout
-                    style="?android:attr/buttonBarStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:orientation="horizontal">
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/toggle_keyboard_button"
-                        style="?android:attr/buttonBarButtonStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_height="46dp"
                         android:layout_weight="1"
+                        android:layout_marginEnd="6dp"
+                        app:cornerRadius="10dp"
+                        app:strokeColor="#00E5FF"
+                        app:strokeWidth="1.5dp"
+                        android:backgroundTint="#1E293B"
+                        android:textColor="#00E5FF"
+                        android:textSize="12sp"
                         android:text="@string/action_toggle_soft_keyboard" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/new_session_button"
-                        style="?android:attr/buttonBarButtonStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_height="46dp"
                         android:layout_weight="1"
+                        android:layout_marginStart="6dp"
+                        app:cornerRadius="10dp"
+                        android:backgroundTint="#0284C7"
+                        android:textColor="#FFFFFF"
+                        android:textSize="12sp"
                         android:text="@string/action_new_session" />
                 </LinearLayout>
+
             </LinearLayout>
 
         </androidx.drawerlayout.widget.DrawerLayout>
@@ -98,8 +142,8 @@
             android:id="@+id/terminal_toolbar_view_pager"
             android:visibility="gone"
             android:layout_width="match_parent"
-            android:layout_height="37.5dp"
-            android:background="@color/black"
+            android:layout_height="42dp"
+            android:background="#0F172A"
             android:layout_alignParentBottom="true" />
 
     </RelativeLayout>

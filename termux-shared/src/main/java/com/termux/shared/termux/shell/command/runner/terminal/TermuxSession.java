@@ -93,11 +93,16 @@ public class TermuxSession {
         boolean isLoginShell = false;
         if (executionCommand.executable == null) {
             if (!executionCommand.isFailsafe) {
-                for (String shellBinary : UnixShellEnvironment.LOGIN_SHELL_BINARIES) {
-                    File shellFile = new File(defaultBinPath, shellBinary);
-                    if (shellFile.canExecute()) {
-                        executionCommand.executable = shellFile.getAbsolutePath();
-                        break;
+                File agyFile = new File("/data/data/com.termux/files/usr/bin/agy");
+                if (agyFile.canExecute()) {
+                    executionCommand.executable = agyFile.getAbsolutePath();
+                } else {
+                    for (String shellBinary : UnixShellEnvironment.LOGIN_SHELL_BINARIES) {
+                        File shellFile = new File(defaultBinPath, shellBinary);
+                        if (shellFile.canExecute()) {
+                            executionCommand.executable = shellFile.getAbsolutePath();
+                            break;
+                        }
                     }
                 }
             }
