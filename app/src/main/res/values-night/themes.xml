@@ -3,10 +3,10 @@
     <!-- TermuxActivity DayNight NoActionBar theme. -->
     <style name="Theme.TermuxActivity.DayNight.NoActionBar" parent="Theme.TermuxApp.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#0F172A</item>
-        <item name="colorPrimaryVariant">#090D16</item>
+        <item name="colorPrimary">@color/slate_900</item>
+        <item name="colorPrimaryVariant">@color/slate_950</item>
 
-        <item name="android:windowBackground">#0F172A</item>
+        <item name="android:windowBackground">@color/slate_900</item>
 
         <!-- Avoid action mode toolbar pushing down terminal content when selecting text -->
         <item name="android:windowActionModeOverlay">true</item>
@@ -19,13 +19,13 @@
 
         <!-- Left drawer. -->
         <item name="buttonBarButtonStyle">@style/TermuxActivity.Drawer.ButtonBarStyle.Dark</item>
-        <item name="termuxActivityDrawerBackground">#0F172A</item>
-        <item name="termuxActivityDrawerImageTint">#00E5FF</item>
+        <item name="termuxActivityDrawerBackground">@color/slate_900</item>
+        <item name="termuxActivityDrawerImageTint">@color/cyan_400</item>
 
         <!-- Extra keys colors. -->
-        <item name="extraKeysButtonTextColor">#E2E8F0</item>
-        <item name="extraKeysButtonActiveTextColor">#00E5FF</item>
-        <item name="extraKeysButtonBackgroundColor">#1E293B</item>
-        <item name="extraKeysButtonActiveBackgroundColor">#0284C7</item>
+        <item name="extraKeysButtonTextColor">@color/slate_200</item>
+        <item name="extraKeysButtonActiveTextColor">@color/cyan_400</item>
+        <item name="extraKeysButtonBackgroundColor">@color/slate_800</item>
+        <item name="extraKeysButtonActiveBackgroundColor">@color/cyan_600</item>
     </style>
 </resources>
