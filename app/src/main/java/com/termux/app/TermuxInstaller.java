@@ -204,11 +204,11 @@ final class TermuxInstaller {
                             }
                         }
                     }
-
                     if (symlinks.isEmpty())
                         throw new RuntimeException("No SYMLINKS.txt encountered");
                     for (Pair<String, String> symlink : symlinks) {
                         try {
+                            new File(symlink.second).delete();
                             Os.symlink(symlink.first, symlink.second);
                         } catch (Exception ignored) {}
                     }
@@ -410,10 +410,13 @@ final class TermuxInstaller {
                         long len = f.length();
                         if (len > 0 && len < 1000000) {
                             byte[] bytes = java.nio.file.Files.readAllBytes(f.toPath());
-                            String content = new String(bytes, java.nio.charset.StandardCharsets.UTF_8);
-                            if (content.contains("/data/data/com.termux")) {
-                                content = content.replace("/data/data/com.termux", targetPkgDir);
-                                java.nio.file.Files.write(f.toPath(), content.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+                            boolean isElf = bytes.length >= 4 && bytes[0] == 0x7f && bytes[1] == 'E' && bytes[2] == 'L' && bytes[3] == 'F';
+                            if (!isElf) {
+                                String content = new String(bytes, java.nio.charset.StandardCharsets.UTF_8);
+                                if (content.contains("/data/data/com.termux")) {
+                                    content = content.replace("/data/data/com.termux", targetPkgDir);
+                                    java.nio.file.Files.write(f.toPath(), content.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+                                }
                             }
                         }
                     } catch (Throwable ignored) {}
