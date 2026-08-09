@@ -217,8 +217,12 @@ final class TermuxInstaller {
 
                     Logger.logInfo(LOG_TAG, "Moving termux prefix staging to prefix directory.");
 
+                    FileUtils.deleteFile("termux prefix directory", TERMUX_PREFIX_DIR_PATH, true);
                     if (!TERMUX_STAGING_PREFIX_DIR.renameTo(TERMUX_PREFIX_DIR)) {
-                        throw new RuntimeException("Moving termux prefix staging to prefix directory failed");
+                        Error moveError = FileUtils.moveDirectoryFile("termux prefix staging directory", TERMUX_STAGING_PREFIX_DIR_PATH, TERMUX_PREFIX_DIR_PATH, true);
+                        if (moveError != null && FileUtils.directoryFileExists(TERMUX_STAGING_PREFIX_DIR_PATH, true)) {
+                            throw new RuntimeException("Moving termux prefix staging to prefix directory failed: " + Error.getErrorMarkdownString(moveError));
+                        }
                     }
 
                     Logger.logInfo(LOG_TAG, "Bootstrap packages installed successfully.");
