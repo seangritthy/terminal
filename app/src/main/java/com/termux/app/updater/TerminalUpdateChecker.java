@@ -18,7 +18,7 @@ public class TerminalUpdateChecker {
 
     private static final String LOG_TAG = "TerminalUpdateChecker";
     private static final String GITHUB_RELEASES_API = "https://api.github.com/repos/seangritthy/terminal/releases/latest";
-    public static final String CURRENT_VERSION_TAG = "v0.125.0-terminal";
+    public static final String CURRENT_VERSION_TAG = "v0.126.0-terminal";
 
     public static void checkForUpdates(final Activity activity) {
         if (activity == null || activity.isFinishing()) return;
