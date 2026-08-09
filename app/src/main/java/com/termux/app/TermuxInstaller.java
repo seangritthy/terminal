@@ -225,6 +225,8 @@ final class TermuxInstaller {
                         }
                     }
 
+                    patchExtractedBootstrapFiles(TERMUX_PREFIX_DIR);
+
                     Logger.logInfo(LOG_TAG, "Bootstrap packages installed successfully.");
 
                     // Recreate env file since termux prefix was wiped earlier
@@ -395,23 +397,34 @@ final class TermuxInstaller {
         File[] files = dir.listFiles();
         if (files == null) return;
         String targetPkgDir = TermuxConstants.TERMUX_INTERNAL_PRIVATE_APP_DATA_DIR_PATH;
-        if ("/data/data/com.termux".equals(targetPkgDir)) return;
 
         for (File f : files) {
             if (f.isDirectory()) {
                 patchExtractedBootstrapFiles(f);
             } else if (f.isFile()) {
-                try {
-                    long len = f.length();
-                    if (len > 0 && len < 1000000) {
-                        byte[] bytes = java.nio.file.Files.readAllBytes(f.toPath());
-                        String content = new String(bytes, java.nio.charset.StandardCharsets.UTF_8);
-                        if (content.contains("/data/data/com.termux")) {
-                            content = content.replace("/data/data/com.termux", targetPkgDir);
-                            java.nio.file.Files.write(f.toPath(), content.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+                String path = f.getAbsolutePath();
+                boolean isBinaryOrExec = path.contains("/bin/") || path.contains("/libexec/") || path.contains("/lib/apt/");
+                
+                if (!"/data/data/com.termux".equals(targetPkgDir)) {
+                    try {
+                        long len = f.length();
+                        if (len > 0 && len < 1000000) {
+                            byte[] bytes = java.nio.file.Files.readAllBytes(f.toPath());
+                            String content = new String(bytes, java.nio.charset.StandardCharsets.UTF_8);
+                            if (content.contains("/data/data/com.termux")) {
+                                content = content.replace("/data/data/com.termux", targetPkgDir);
+                                java.nio.file.Files.write(f.toPath(), content.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+                            }
                         }
-                    }
-                } catch (Throwable ignored) {}
+                    } catch (Throwable ignored) {}
+                }
+
+                if (isBinaryOrExec) {
+                    try {
+                        //noinspection OctalInteger
+                        android.system.Os.chmod(path, 0755);
+                    } catch (Throwable ignored) {}
+                }
             }
         }
     }
