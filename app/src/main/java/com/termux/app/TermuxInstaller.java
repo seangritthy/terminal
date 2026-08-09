@@ -167,8 +167,8 @@ final class TermuxInstaller {
                                     String[] parts = line.split("←");
                                     if (parts.length != 2)
                                         throw new RuntimeException("Malformed symlink line: " + line);
-                                    String oldPath = parts[0];
-                                    String newPath = TERMUX_STAGING_PREFIX_DIR_PATH + "/" + parts[1];
+                                    String oldPath = parts[0].replace("/data/data/com.termux", TermuxConstants.TERMUX_INTERNAL_PRIVATE_APP_DATA_DIR_PATH);
+                                    String newPath = (TERMUX_STAGING_PREFIX_DIR_PATH + "/" + parts[1]).replace("/data/data/com.termux", TermuxConstants.TERMUX_INTERNAL_PRIVATE_APP_DATA_DIR_PATH);
                                     symlinks.add(Pair.create(oldPath, newPath));
 
                                     error = ensureDirectoryExists(new File(newPath).getParentFile());
@@ -195,9 +195,10 @@ final class TermuxInstaller {
                                             outStream.write(buffer, 0, readBytes);
                                     }
                                     if (zipEntryName.startsWith("bin/") || zipEntryName.startsWith("libexec") ||
-                                        zipEntryName.startsWith("lib/apt/apt-helper") || zipEntryName.startsWith("lib/apt/methods")) {
+                                        zipEntryName.startsWith("lib/apt/apt-helper") || zipEntryName.startsWith("lib/apt/methods") ||
+                                        zipEntryName.startsWith("lib/")) {
                                         //noinspection OctalInteger
-                                        Os.chmod(targetFile.getAbsolutePath(), 0700);
+                                        Os.chmod(targetFile.getAbsolutePath(), 0755);
                                     }
                                 }
                             }
@@ -207,8 +208,12 @@ final class TermuxInstaller {
                     if (symlinks.isEmpty())
                         throw new RuntimeException("No SYMLINKS.txt encountered");
                     for (Pair<String, String> symlink : symlinks) {
-                        Os.symlink(symlink.first, symlink.second);
+                        try {
+                            Os.symlink(symlink.first, symlink.second);
+                        } catch (Exception ignored) {}
                     }
+
+                    patchExtractedBootstrapFiles(TERMUX_STAGING_PREFIX_DIR);
 
                     Logger.logInfo(LOG_TAG, "Moving termux prefix staging to prefix directory.");
 
@@ -379,6 +384,32 @@ final class TermuxInstaller {
         // Only load the shared library when necessary to save memory usage.
         System.loadLibrary("termux-bootstrap");
         return getZip();
+    }
+
+    private static void patchExtractedBootstrapFiles(File dir) {
+        if (dir == null || !dir.exists()) return;
+        File[] files = dir.listFiles();
+        if (files == null) return;
+        String targetPkgDir = TermuxConstants.TERMUX_INTERNAL_PRIVATE_APP_DATA_DIR_PATH;
+        if ("/data/data/com.termux".equals(targetPkgDir)) return;
+
+        for (File f : files) {
+            if (f.isDirectory()) {
+                patchExtractedBootstrapFiles(f);
+            } else if (f.isFile()) {
+                try {
+                    long len = f.length();
+                    if (len > 0 && len < 1000000) {
+                        byte[] bytes = java.nio.file.Files.readAllBytes(f.toPath());
+                        String content = new String(bytes, java.nio.charset.StandardCharsets.UTF_8);
+                        if (content.contains("/data/data/com.termux")) {
+                            content = content.replace("/data/data/com.termux", targetPkgDir);
+                            java.nio.file.Files.write(f.toPath(), content.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+                        }
+                    }
+                } catch (Throwable ignored) {}
+            }
+        }
     }
 
     public static native byte[] getZip();

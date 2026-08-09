@@ -19,6 +19,7 @@ import com.termux.shared.shell.ShellUtils;
 import com.termux.terminal.TerminalSession;
 import com.termux.terminal.TerminalSessionClient;
 
+import com.termux.shared.termux.TermuxConstants;
 import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
@@ -93,7 +94,7 @@ public class TermuxSession {
         boolean isLoginShell = false;
         if (executionCommand.executable == null) {
             if (!executionCommand.isFailsafe) {
-                File agyFile = new File("/data/data/com.termux/files/usr/bin/agy");
+                File agyFile = new File(TermuxConstants.TERMUX_BIN_PREFIX_DIR_PATH, "agy");
                 if (agyFile.canExecute()) {
                     executionCommand.executable = agyFile.getAbsolutePath();
                 } else {
